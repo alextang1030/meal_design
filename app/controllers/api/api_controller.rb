@@ -39,8 +39,8 @@ class Api::ApiController < ActionController::API
 	
 	def get_image(obj)
 		result = {
-			:original => !obj.nil? ? "#{request.protocol}#{request.domain}"+obj.url(:original) : "",
-			:thumb => !obj.nil? ? "#{request.protocol}#{request.domain}"+obj.url(:thumb) : "",
+			:original => !obj.nil? ? "#{request.protocol}#{request.host_with_port}/"+obj.url(:original) : "",
+			:thumb => !obj.nil? ? "#{request.protocol}#{request.host_with_port}/"+obj.url(:thumb) : "",
 		}
 		
 		result
