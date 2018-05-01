@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   
-  root 'user#login', constraints: lambda { |cookies| !cookies[:user_token].present? }
+  root 'login#show', constraints: lambda { |cookies| !cookies[:user_token].present? }
   root 'home#index'
   
-  get "user/login" => "user#login"
   # resources :home
   # get "home/profile"=> "home#profile"
+  
+  resources :login
   
   namespace :api do
 	namespace 'v1' do
