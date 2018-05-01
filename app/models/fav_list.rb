@@ -1,0 +1,2 @@
+class FavList < ApplicationRecord
+end

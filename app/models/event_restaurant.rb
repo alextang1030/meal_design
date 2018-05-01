@@ -1,0 +1,2 @@
+class EventRestaurant < ApplicationRecord
+end
