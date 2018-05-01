@@ -12,7 +12,7 @@ class Api::V1::UserController < ApplicationController
 	end
 
 	def get
-	
+		
 	end
 	
 	def registration

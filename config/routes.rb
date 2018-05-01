@@ -52,6 +52,7 @@ Rails.application.routes.draw do
 			get "" => :list
 			get ":id" => :get
 			put "(:id)" => :edit
+			post "add/:id" => :add_users
 			delete ":id" => :delete
 		end
 		
