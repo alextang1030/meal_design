@@ -1,6 +1,6 @@
 class UserGroupMember < ApplicationRecord
 	
-	has_one :user
+	belongs_to :user, foreign_key: "user_id"
 	belongs_to :user_group, foreign_key: "group_id"
 	
 	default_scope {where(deleted_flag:"N")}

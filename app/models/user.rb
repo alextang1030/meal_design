@@ -6,8 +6,10 @@ class User < ApplicationRecord
 	self.primary_key = "user_id"
 	
 	has_many :user_groups
+	has_many :user_group_members
 	has_many :user_login_tokens
 	has_many :events
+	has_many :event_invites
 	has_many :fav_lists
 	has_many :black_lists
 	has_many :user_histories

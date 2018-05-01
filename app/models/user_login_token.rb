@@ -2,6 +2,8 @@ class UserLoginToken < ApplicationRecord
 	
 	require 'securerandom'
 	
+	self.primary_key = "token_id"
+	
 	belongs_to :user, foreign_key: "user_id"
 	
 	default_scope {where("expried_date > ?","#{DateTime.current.to_formatted_s(:db)}")}

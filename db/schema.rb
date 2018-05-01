@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2018_05_01_054306) do
     t.string "event_name"
     t.date "event_date"
     t.time "event_time"
+    t.string "restaurant_id", limit: 50
     t.string "schedule_flag", limit: 1, default: "N"
     t.string "mon_flag", limit: 1, default: "N"
     t.string "tue_flag", limit: 1, default: "N"

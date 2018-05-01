@@ -1,7 +1,6 @@
 class EventInvite < ApplicationRecord
 
-	has_one :user
-	
+	belongs_to :user, foreign_key: "user_id"
 	belongs_to :event, foreign_key: "event_id"
 	
 	CURRENT_STATUS = %w(attend invited cancel)

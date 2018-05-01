@@ -2,6 +2,7 @@ class Event < ApplicationRecord
 	
 	has_many :event_invites
 	has_many :event_restaurants
+	has_one :restaurant
 	
 	belongs_to :user, foreign_key: "user_id"
 	

@@ -5,6 +5,9 @@ class Restaurant < ApplicationRecord
 	self.primary_key = "restaurant_id"
 	
 	has_many :reviews
+	has_many :fav_lists
+	has_many :black_lists
+	has_many :event_restaurants
 	
 	belongs_to :suburb, foreign_key: "suburb_id"
 	
