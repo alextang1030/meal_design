@@ -1,4 +1,4 @@
-class Api::V1::StatesController < ApplicationController
+class Api::V1::StatesController < Api::ApiController
 	def list
 	
 	end

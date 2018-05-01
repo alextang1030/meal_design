@@ -1,4 +1,4 @@
-class Api::V1::BlacklistController < ApplicationController
+class Api::V1::BlacklistController < Api::ApiController
 	def list
 	
 	end

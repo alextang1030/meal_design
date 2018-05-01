@@ -1,4 +1,4 @@
-class Api::V1::GroupController < ApplicationController
+class Api::V1::GroupController < Api::ApiController
 	
 	def list
 	

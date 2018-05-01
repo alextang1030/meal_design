@@ -1,4 +1,4 @@
-class Api::V1::FavouriteController < ApplicationController
+class Api::V1::FavouriteController < Api::ApiController
 
 	def list
 	

@@ -1,4 +1,4 @@
-class Api::V1::RestaurantController < ApplicationController
+class Api::V1::RestaurantController < Api::ApiController
 	
 	def list
 	

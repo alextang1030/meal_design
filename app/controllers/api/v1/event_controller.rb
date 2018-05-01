@@ -1,4 +1,4 @@
-class Api::V1::EventController < ApplicationController
+class Api::V1::EventController < Api::ApiController
 
 	def list
 	

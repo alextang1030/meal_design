@@ -1,4 +1,4 @@
-class Api::V1::HistoryController < ApplicationController
+class Api::V1::HistoryController < Api::ApiController
 
 	def list
 	
