@@ -34,7 +34,7 @@ class Api::V1::UserController < Api::ApiController
 		user = User.new
 		
 		user.attributes.keys.each do |k|
-			if !["user_id"].include?(k) && params[k].present?
+			if !["user_id","deleted_flag"].include?(k) && params[k].present?
 				user[k] = params[k]
 			end
 		end
@@ -113,4 +113,27 @@ class Api::V1::UserController < Api::ApiController
 		render json: self.response_array(0,"",result)
 	end
 	
+	
+	def search
+		msg = self.user_auth()
+		
+		if msg.present?
+			render json: self.response_array(1,msg,{})
+			return
+		end
+		
+		result = {}
+		if params[:search].present?
+			users = User.where("lower(user_name) LIKE :search or email = :email",{ 
+				:search => "%#{params[:search].downcase}%",
+				:email => params[:search]
+			})
+			
+			result = users.find_each.map{ |user|
+				self.return_user(user)
+			}
+		end
+		
+		render json: self.response_array(0,"",result)
+	end
 end

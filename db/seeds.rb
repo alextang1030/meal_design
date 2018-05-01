@@ -7,17 +7,17 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 Country.create([
-	{ code_name: "hong_kong" }
+	{ code_name: "hong_king" }
 ])
 
 State.create([
-	{ country_id: Country.find_by({code_name: "hong_kong"}).id, code_name: "hki" },
-	{ country_id: Country.find_by({code_name: "hong_kong"}).id, code_name: "kln" },
-	{ country_id: Country.find_by({code_name: "hong_kong"}).id, code_name: "nt" },
+	{ country_id: Country.find_by({code_name: "hong_king"}).id, code_name: "hki" },
+	{ country_id: Country.find_by({code_name: "hong_king"}).id, code_name: "kln" },
+	{ country_id: Country.find_by({code_name: "hong_king"}).id, code_name: "nt" },
 ])
 
 State.find_by({code_name: "kln"}).suburbs.create([
-	{ country_id: Country.find_by({code_name: "hong_kong"}).id  ,code_name: "kt" },
+	{ country_id: Country.find_by({code_name: "hong_king"}).id  ,code_name: "kt" },
 ])
 
 case Rails.env
@@ -42,7 +42,7 @@ when "development"
    
    User.create([
 	{ email: "alex.tang@dev.com.hk" , password: "abcd1234" ,user_name: "Alex Tang"},
-	{ email: "kong.wong@dev.com.hk" , password: "abcd1234" ,user_name: "Kong Wong"},
+	{ email: "king.wong@dev.com.hk" , password: "abcd1234" ,user_name: "King Wong"},
 	{ email: "eva.chung@dev.com.hk" , password: "abcd1234" ,user_name: "Eva Chung"},
    ])
    
@@ -55,7 +55,7 @@ when "development"
    
    User.find_by({email: "alex.tang@dev.com.hk"}).user_groups.find(1).user_group_members.create([
 	{ user_id: User.find_by({email: "alex.tang@dev.com.hk"}).user_id , user_role: "admin" },
-	{ user_id: User.find_by({email: "kong.wong@dev.com.hk"}).user_id },
+	{ user_id: User.find_by({email: "king.wong@dev.com.hk"}).user_id },
 	{ user_id: User.find_by({email: "eva.chung@dev.com.hk"}).user_id }
    ])
    
@@ -65,7 +65,7 @@ when "development"
    
    User.find_by({email: "alex.tang@dev.com.hk"}).events.find(1).event_invites.create([
 	{ user_id: User.find_by({email: "alex.tang@dev.com.hk"}).user_id , status: "attend" },
-	{ user_id: User.find_by({email: "kong.wong@dev.com.hk"}).user_id },
+	{ user_id: User.find_by({email: "king.wong@dev.com.hk"}).user_id },
 	{ user_id: User.find_by({email: "eva.chung@dev.com.hk"}).user_id }
    ])
    

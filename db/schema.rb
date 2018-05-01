@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 2018_05_01_054306) do
     t.bigint "event_id"
     t.string "user_id", limit: 50
     t.string "status", default: "invited"
+    t.string "deleted_flag", limit: 1, default: "N"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
