@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 		end
 		
 		scope :controller => "event", :path => "/events" do
+			get "gen/:id" => :gen
 			get "" => :list
 			get ":id"=> :get
 			put "(:id)" => :edit

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_01_054306) do
+ActiveRecord::Schema.define(version: 2018_05_05_162204) do
 
   create_table "black_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "user_id", limit: 50
@@ -32,6 +32,13 @@ ActiveRecord::Schema.define(version: 2018_05_01_054306) do
     t.string "user_id", limit: 50
     t.string "status", default: "invited"
     t.string "deleted_flag", limit: 1, default: "N"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "event_randoms", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "event_id"
+    t.string "restaurant_id", limit: 50
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -76,10 +83,13 @@ ActiveRecord::Schema.define(version: 2018_05_01_054306) do
     t.string "restaurant_id", limit: 50
     t.string "name"
     t.string "address"
+    t.string "type"
     t.bigint "suburb_id"
+    t.string "avg_price"
     t.string "breakfast_flag", limit: 1, default: "N"
     t.string "lunch_flag", limit: 1, default: "N"
     t.string "dinner_flag", limit: 1, default: "N"
+    t.string "desserts_flag", limit: 1, default: "N"
     t.string "deleted_flag", limit: 1, default: "N"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

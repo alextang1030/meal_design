@@ -8,7 +8,7 @@ class Api::V1::GroupController < Api::ApiController
 				{
 					:member_id => member.id,
 					:user_name => member.user.user_name,
-					:profile => self.get_image(member.user.profile)
+					:profile => helpers.get_image(member.user.profile)
 				}
 			}
 		}
@@ -20,11 +20,11 @@ class Api::V1::GroupController < Api::ApiController
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
-		render json: self.response_array(0,"",UserGroupMember.where({user_id: @user.user_id}).find_each.map{|member|
+		render json: helpers.response_array(0,"",UserGroupMember.where({user_id: @user.user_id}).find_each.map{|member|
 			{
 				:group_id => member.user_group.id,
 				:group_name => member.user_group.group_name,
@@ -37,25 +37,25 @@ class Api::V1::GroupController < Api::ApiController
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
 		if !params[:id].present? || !UserGroup.exists?(params[:id]) || !UserGroupMember.exists?({user_id: @user.user_id, group_id: params[:id]})
-			render json: self.response_array(1,"error_group_not_found",{})
+			render json: helpers.response_array(1,"error_group_not_found",{})
 			return
 		end
 		
 		group = UserGroup.find(params[:id])
 		
-		render json: self.response_array(0,"",self.return_group(group))
+		render json: helpers.response_array(0,"",self.return_group(group))
 	end
 	
 	def edit
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
@@ -64,7 +64,7 @@ class Api::V1::GroupController < Api::ApiController
 			group = @user.user_groups.new
 		else 
 			if !@user.user_groups.exists?(params[:id])
-				render json: self.response_array(1,"error_group_not_found",{})
+				render json: helpers.response_array(1,"error_group_not_found",{})
 				return
 			else
 				group = @user.user_groups.find(params[:id])
@@ -78,7 +78,7 @@ class Api::V1::GroupController < Api::ApiController
 		if group.valid?
 			group.save
 		else
-			render json: self.response_array(1,group.errors.full_messages[0],{})
+			render json: helpers.response_array(1,group.errors.full_messages[0],{})
 			return
 		end
 		
@@ -88,7 +88,7 @@ class Api::V1::GroupController < Api::ApiController
 				user_role: "admin"
 			})
 		end
-		render json: self.response_array(0,"",self.return_group(group))
+		render json: helpers.response_array(0,"",self.return_group(group))
 		
 	end
 	
@@ -96,12 +96,12 @@ class Api::V1::GroupController < Api::ApiController
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
 		if !params[:id].present? || !UserGroup.exists?(params[:id]) || !UserGroupMember.exists?({user_id: @user.user_id, group_id: params[:id]})
-			render json: self.response_array(1,"error_group_not_found",{})
+			render json: helpers.response_array(1,"error_group_not_found",{})
 			return
 		end
 		
@@ -117,19 +117,19 @@ class Api::V1::GroupController < Api::ApiController
 			end
 		end
 		
-		render json: self.response_array(0,"",self.return_group(group))
+		render json: helpers.response_array(0,"",self.return_group(group))
 	end
 	
 	def remove_users
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
 		if !params[:id].present? || !UserGroup.exists?(params[:id]) || !UserGroupMember.exists?({user_id: @user.user_id, group_id: params[:id]})
-			render json: self.response_array(1,"error_group_not_found",{})
+			render json: helpers.response_array(1,"error_group_not_found",{})
 			return
 		end
 		
@@ -147,19 +147,19 @@ class Api::V1::GroupController < Api::ApiController
 			end
 		end
 		
-		render json: self.response_array(0,"",self.return_group(group))
+		render json: helpers.response_array(0,"",self.return_group(group))
 	end
 	
 	def delete
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
 		if !params[:id].present? || !UserGroup.exists?(params[:id]) || !UserGroupMember.exists?({user_id: @user.user_id, group_id: params[:id]})
-			render json: self.response_array(1,"error_group_not_found",{})
+			render json: helpers.response_array(1,"error_group_not_found",{})
 			return
 		end
 		
@@ -169,6 +169,6 @@ class Api::V1::GroupController < Api::ApiController
 		group.deleted_flag = "Y"
 		group.save
 		
-		render json: self.response_array(0,"",{})
+		render json: helpers.response_array(0,"",{})
 	end
 end

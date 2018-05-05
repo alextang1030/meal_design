@@ -13,8 +13,8 @@ class Api::V1::RestaurantController < Api::ApiController
 			restaurants = restaurants.where({suburb_id: params[:suburb]}) 
 		end
 		
-		render json: self.response_array(0,"",restaurants.map{|restaurant|
-			temp = self.return_restaurant(restaurant)
+		render json: helpers.response_array(0,"",restaurants.map{|restaurant|
+			temp = helpers.return_restaurant(restaurant)
 			if !@user.nil?
 				temp[:is_fav] = (FavList.exists?({user_id: @user.user_id, restaurant_id: restaurant.restaurant_id})) ? true : false
 				temp[:is_black] = (BlackList.exists?({user_id: @user.user_id, restaurant_id: restaurant.restaurant_id})) ? true : false
@@ -28,7 +28,7 @@ class Api::V1::RestaurantController < Api::ApiController
 		msg = self.user_auth()
 		
 		if !params[:id].present? || !Restaurant.exists?(params[:id])
-			render json: self.response_array(1,"error_restaurant_not_found",{})
+			render json: helpers.response_array(1,"error_restaurant_not_found",{})
 			return
 		end
 		
@@ -42,10 +42,10 @@ class Api::V1::RestaurantController < Api::ApiController
 			:suburb => restaurant.suburb.code_name,
 			:state => restaurant.suburb.state.code_name,
 			:country => restaurant.suburb.state.country.code_name,
-			:image => self.get_image(restaurant.image),
+			:image => helpers.get_image(restaurant.image),
 			:reviews => restaurant.reviews.map{ |review|
 				{
-					:user => self.return_user(review.user),
+					:user => helpers.return_user(review.user),
 					:stars => review.stars,
 					:created_at => review.created_at
 				}
@@ -56,6 +56,6 @@ class Api::V1::RestaurantController < Api::ApiController
 			result[:is_black] = (BlackList.exists?({user_id: @user.user_id, restaurant_id: restaurant.restaurant_id})) ? true : false
 		end
 		
-		render json: self.response_array(0,"",result)
+		render json: helpers.response_array(0,"",result)
 	end
 end

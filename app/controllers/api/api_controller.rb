@@ -2,49 +2,7 @@ class Api::ApiController < ActionController::API
 
 	# protect_from_forgery with: :null_session
 	
-	
-	def response_array(code,msg,data)
-		temp = {
-			:response_code => code,
-			:response_msg => msg,
-			:response_data => data
-		}
-
-		temp
-	end
-	
-	def return_user(user)
-		result = {
-			:user_id => user.user_id,
-			:user_name => user.user_name,
-			:profile => self.get_image(user.profile)
-		}
-		
-		result
-	end
-	
-	
-	def return_restaurant(restaurant)
-		result = {
-			:restaurant_id => restaurant.restaurant_id,
-			:name => restaurant.name,
-			:address => restaurant.address,
-			:total_stars => restaurant.reviews.average(:stars),
-			:suburb => restaurant.suburb.code_name,
-			:state => restaurant.suburb.state.code_name,
-			:country => restaurant.suburb.state.country.code_name,
-			:image => self.get_image(restaurant.image)
-		}
-	end
-	
-	def get_image(obj)
-		result = {
-			:original => !obj.nil? ? "#{request.protocol}#{request.host_with_port}/"+obj.url(:original) : "",
-			:thumb => !obj.nil? ? "#{request.protocol}#{request.host_with_port}/"+obj.url(:thumb) : "",
-		}
-		
-		result
-	end
+	include Api::ApiHelper
 	
 	def user_auth()
 		msg = ""

@@ -4,11 +4,11 @@ class Api::V1::HistoryController < Api::ApiController
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
-		render json: self.response_array(0,"",@user.user_histories.map{|history|
+		render json: helpers.response_array(0,"",@user.user_histories.map{|history|
 			{
 				:event_id => history.event.id,
 				:event_name => history.event.event_name,

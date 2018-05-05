@@ -1,6 +1,8 @@
 class Event < ApplicationRecord
 	
 	has_many :event_invites
+	has_many :event_randoms
+	has_many :event_restaurants
 	has_many :event_restaurants
 	has_one :restaurant
 	

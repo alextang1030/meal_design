@@ -1,5 +1,5 @@
 class Api::V1::EventController < Api::ApiController
-
+	
 	def return_event(event)
 		result = {
 			:event_id => event.id,
@@ -14,16 +14,16 @@ class Api::V1::EventController < Api::ApiController
 			:fri_flag => event.fri_flag,
 			:sat_flag => event.sat_flag,
 			:sun_flag => event.sun_flag,
-			:restaurant => event.restaurant_id.present? ? self.return_restaurant(Restaurant.find(event.restaurant_id)) : nil,
+			:restaurant => event.restaurant_id.present? ? helpers.return_restaurant(Restaurant.find(event.restaurant_id)) : nil,
 			:invited => event.event_invites.where.not({status: "cancelled"}).count,
 			:attend => event.event_invites.where({status: "attend"}).count,
 			:members => event.event_invites.map{|member|
-				temp = self.return_user(member.user)
+				temp = helpers.return_user(member.user)
 				temp[:status] = member.status
 				temp
 			},
 			:restaurants => event.event_restaurants.map{|res|
-				self.return_restaurant(res.restaurant)
+				helpers.return_restaurant(res.restaurant)
 			}
 		}
 		
@@ -33,18 +33,18 @@ class Api::V1::EventController < Api::ApiController
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
-		render json: self.response_array(0,"",@user.event_invites.where.not({status: "cancelled"}).map{|invite|
+		render json: helpers.response_array(0,"",@user.event_invites.where.not({status: "cancelled"}).map{|invite|
 			event = invite.event
 			{
 				:event_id => event.id,
 				:event_name => event.event_name,
 				:event_date => event.event_date,
 				:event_time => event.event_time,
-				:restaurant => event.restaurant_id.present? ? self.return_restaurant(Restaurant.find(event.restaurant_id)) : nil,
+				:restaurant => event.restaurant_id.present? ? helpers.return_restaurant(Restaurant.find(event.restaurant_id)) : nil,
 				:invited => event.event_invites.where.not({status: "cancelled"}).count,
 				:attend => event.event_invites.where({status: "attend"}).count,
 				:restaurants => event.event_restaurants.count
@@ -56,25 +56,25 @@ class Api::V1::EventController < Api::ApiController
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
 		if !params[:id].present? || !@user.event_invites.exists?({event_id: params[:id]})
-			render json: self.response_array(1,"error_event_not_found",{})
+			render json: helpers.response_array(1,"error_event_not_found",{})
 			return
 		end
 		
 		event = @user.event_invites.find_by({event_id: params[:id]}).event
 		
-		render json: self.response_array(0,"",self.return_event(event))
+		render json: helpers.response_array(0,"",self.return_event(event))
 	end
 	
 	def edit
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
@@ -93,7 +93,7 @@ class Api::V1::EventController < Api::ApiController
 		if event.valid?
 			event.save
 		else
-			render json: self.response_array(1,event.errors.full_messages[0],{})
+			render json: helpers.response_array(1,event.errors.full_messages[0],{})
 			return
 		end
 		
@@ -103,7 +103,7 @@ class Api::V1::EventController < Api::ApiController
 			});
 		end
 		
-		render json: self.response_array(0,"",self.return_event(event))
+		render json: helpers.response_array(0,"",self.return_event(event))
 		
 	end
 	
@@ -111,12 +111,12 @@ class Api::V1::EventController < Api::ApiController
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
 		if !params[:id].present? || !@user.events.exists?(params[:id])
-			render json: self.response_array(1,"error_event_not_found",{})
+			render json: helpers.response_array(1,"error_event_not_found",{})
 			return
 		else
 			event = @user.events.find(params[:id])
@@ -132,19 +132,19 @@ class Api::V1::EventController < Api::ApiController
 			end
 		end
 		
-		render json: self.response_array(0,"",self.return_event(event))
+		render json: helpers.response_array(0,"",self.return_event(event))
 	end
 	
 	def remove_users
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
 		if !params[:id].present? || !@user.events.exists?(params[:id])
-			render json: self.response_array(1,"error_event_not_found",{})
+			render json: helpers.response_array(1,"error_event_not_found",{})
 			return
 		else
 			event = @user.events.find(params[:id])
@@ -160,19 +160,19 @@ class Api::V1::EventController < Api::ApiController
 			end
 		end
 		
-		render json: self.response_array(0,"",self.return_event(event))
+		render json: helpers.response_array(0,"",self.return_event(event))
 	end
 	
 	def status
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
 		if !params[:id].present? || !@user.events.exists?(params[:id])
-			render json: self.response_array(1,"error_event_not_found",{})
+			render json: helpers.response_array(1,"error_event_not_found",{})
 			return
 		else
 			event = @user.events.find(params[:id])
@@ -185,23 +185,23 @@ class Api::V1::EventController < Api::ApiController
 		if invited.valid?
 			invited.save
 		else
-			render json: self.response_array(1,invited.errors.full_messages[0],{})
+			render json: helpers.response_array(1,invited.errors.full_messages[0],{})
 			return
 		end
 		
-		render json: self.response_array(0,"",self.return_event(event))
+		render json: helpers.response_array(0,"",self.return_event(event))
 	end
 	
 	def leave
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
 		if !params[:id].present? || !@user.event_invites.exists?({event_id: params[:id]})
-			render json: self.response_array(1,"error_event_not_found",{})
+			render json: helpers.response_array(1,"error_event_not_found",{})
 			return
 		else
 			invited = @user.event_invites.find_by({event_id: params[:id]})
@@ -212,23 +212,23 @@ class Api::V1::EventController < Api::ApiController
 		if invited.valid?
 			invited.save
 		else
-			render json: self.response_array(1,invited.errors.full_messages[0],{})
+			render json: helpers.response_array(1,invited.errors.full_messages[0],{})
 			return
 		end
 		
-		render json: self.response_array(0,"",{})
+		render json: helpers.response_array(0,"",{})
 	end
 	
 	def add_restaurants
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
 		if !params[:id].present? || !@user.events.exists?(params[:id])
-			render json: self.response_array(1,"error_event_not_found",{})
+			render json: helpers.response_array(1,"error_event_not_found",{})
 			return
 		else
 			event = @user.events.find(params[:id])
@@ -244,19 +244,19 @@ class Api::V1::EventController < Api::ApiController
 			end
 		end
 		
-		render json: self.response_array(0,"",self.return_event(event))
+		render json: helpers.response_array(0,"",self.return_event(event))
 	end
 	
 	def remove_restaurants
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
 		if !params[:id].present? || !@user.events.exists?(params[:id])
-			render json: self.response_array(1,"error_event_not_found",{})
+			render json: helpers.response_array(1,"error_event_not_found",{})
 			return
 		else
 			event = @user.events.find(params[:id])
@@ -272,19 +272,19 @@ class Api::V1::EventController < Api::ApiController
 			end
 		end
 		
-		render json: self.response_array(0,"",self.return_event(event))
+		render json: helpers.response_array(0,"",self.return_event(event))
 	end
 	
 	def delete
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
 		if !params[:id].present? || !@user.events.exists?(params[:id])
-			render json: self.response_array(1,"error_event_not_found",{})
+			render json: helpers.response_array(1,"error_event_not_found",{})
 			return
 		else
 			event = @user.events.find(params[:id])
@@ -295,6 +295,59 @@ class Api::V1::EventController < Api::ApiController
 		event.deleted_flag = "Y"
 		event.save
 		
-		render json: self.response_array(0,"",{})
+		render json: helpers.response_array(0,"",{})
+	end
+	
+	def gen
+		msg = self.user_auth()
+		
+		if msg.present?
+			render json: helpers.response_array(1,msg,{})
+			return
+		end
+		
+		if !params[:id].present? || !@user.event_invites.exists?({event_id: params[:id]})
+			render json: helpers.response_array(1,"error_event_not_found",{})
+			return
+		end
+		
+		event = @user.event_invites.find_by({event_id: params[:id]}).event
+		
+		result = helpers.gen_event_result(event)
+		
+		render json: result
+	end
+	
+	def confirm
+		msg = self.user_auth()
+		
+		if msg.present?
+			render json: helpers.response_array(1,msg,{})
+			return
+		end
+		
+		if !params[:id].present? || !@user.event_invites.exists?({event_id: params[:id]})
+			render json: helpers.response_array(1,"error_event_not_found",{})
+			return
+		end
+		
+		event = @user.event_invites.find_by({event_id: params[:id]}).event
+		
+		if !event.restaurant_id.present?
+			render json: helpers.response_array(1,"error_not_result_found",{})
+			return
+		end
+		
+		event.event_invites.where({status:"attend"}).each do |attend|
+			attend.user.user_histories.create({
+				event_id: event.event_id,
+				restaurant_id: event.restaurant_id
+			})
+		end
+		
+		event.restaurant_id = ""
+		event.save
+		
+		render json: helpers.response_array(0,"",self.return_event(event))
 	end
 end

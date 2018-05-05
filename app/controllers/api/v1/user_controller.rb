@@ -7,7 +7,7 @@ class Api::V1::UserController < Api::ApiController
 			user_ip: request.remote_ip,
 			user_agent: request.user_agent
 		})
-		result = self.return_user(user)
+		result = helpers.return_user(user)
 		result["token_id"] = token.token_id
 		
 		result
@@ -17,12 +17,12 @@ class Api::V1::UserController < Api::ApiController
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
-		result = self.return_user(@user)
+		result = helpers.return_user(@user)
 		
-		render json: self.response_array(0,"",result)
+		render json: helpers.response_array(0,"",result)
 	end
 	
 	def registration
@@ -45,32 +45,32 @@ class Api::V1::UserController < Api::ApiController
 		if user.valid?
 			user.save
 		else
-			render json: self.response_array(1,user.errors.full_messages[0],{})
+			render json: helpers.response_array(1,user.errors.full_messages[0],{})
 			return
 		end
 		
 		token = self.create_token(user)
 		
-		render json: self.response_array(0,"",token)
+		render json: helpers.response_array(0,"",token)
 	end
 	
 	def login
 		
 		if !params[:email].present? || !params[:password].present?
-			render json: self.response_array(1,"error_email_or_password_missing",{})
+			render json: helpers.response_array(1,"error_email_or_password_missing",{})
 			return
 		end
 		
 		if User.exists?({email: params[:email], password: Digest::MD5.hexdigest(params[:password])})
 			user = User.find_by({email: params[:email], password: Digest::MD5.hexdigest(params[:password])})
 		else
-			render json: self.response_array(1,"error_user_not_found",{})
+			render json: helpers.response_array(1,"error_user_not_found",{})
 			return
 		end
 		
 		token = self.create_token(user)
 		
-		render json: self.response_array(0,"",token)
+		render json: helpers.response_array(0,"",token)
 		
 	end
 	
@@ -78,7 +78,7 @@ class Api::V1::UserController < Api::ApiController
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
@@ -105,12 +105,12 @@ class Api::V1::UserController < Api::ApiController
 		if @user.valid?
 			@user.save
 		else
-			render json: self.response_array(1,@user.errors.full_messages[0],{})
+			render json: helpers.response_array(1,@user.errors.full_messages[0],{})
 			return
 		end
 		
-		result = self.return_user(@user)
-		render json: self.response_array(0,"",result)
+		result = helpers.return_user(@user)
+		render json: helpers.response_array(0,"",result)
 	end
 	
 	
@@ -118,7 +118,7 @@ class Api::V1::UserController < Api::ApiController
 		msg = self.user_auth()
 		
 		if msg.present?
-			render json: self.response_array(1,msg,{})
+			render json: helpers.response_array(1,msg,{})
 			return
 		end
 		
@@ -130,10 +130,10 @@ class Api::V1::UserController < Api::ApiController
 			})
 			
 			result = users.find_each.map{ |user|
-				self.return_user(user)
+				helpers.return_user(user)
 			}
 		end
 		
-		render json: self.response_array(0,"",result)
+		render json: helpers.response_array(0,"",result)
 	end
 end
