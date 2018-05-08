@@ -89,7 +89,6 @@ module Api::ApiHelper
 		end
 		
 		random = event.event_randoms.order("RAND()").first
-		p random
 		result = Restaurant.find(random.restaurant_id)
 		temp = self.response_array(0,"",self.return_restaurant(result))
 		event.restaurant_id = random.restaurant_id

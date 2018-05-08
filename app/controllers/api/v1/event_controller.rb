@@ -313,6 +313,10 @@ class Api::V1::EventController < Api::ApiController
 		
 		event = @user.event_invites.find_by({event_id: params[:id]}).event
 		
+		if event.finish_flag == "Y"
+			render json: helpers.response_array(1,"error_event_finished",{})
+			return
+		end
 		result = helpers.gen_event_result(event)
 		
 		render json: result
@@ -340,13 +344,20 @@ class Api::V1::EventController < Api::ApiController
 		
 		event.event_invites.where({status:"attend"}).each do |attend|
 			attend.user.user_histories.create({
-				event_id: event.event_id,
+				event_id: event.id,
 				restaurant_id: event.restaurant_id
 			})
 		end
 		
-		event.restaurant_id = ""
+		if event.schedule_flag == "Y"
+			event.restaurant_id = ""
+		else
+			event.finish_flag = "Y"
+		end
+		
 		event.save
+		
+		event.event_randoms.destroy_all
 		
 		render json: helpers.response_array(0,"",self.return_event(event))
 	end

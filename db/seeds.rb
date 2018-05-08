@@ -136,7 +136,18 @@ when "development"
    })
    
    User.find_by({email: "alex.tang@vicosys.com.hk"}).events.create([
-	{ event_name: "Daily Lunch"}
+	{ 
+		event_name: "Daily Lunch",
+		schedule_flag: "Y",
+		mon_flag: "Y",
+		tue_flag: "Y",
+		wed_flag: "Y",
+		thr_flag: "Y",
+		fri_flag: "Y",
+	},
+	{ 
+		event_name: "Dinner"
+	}
    ])
    
    User.find_by({email: "alex.tang@vicosys.com.hk"}).events.find(1).event_invites.create(User.find_each.map{|user|

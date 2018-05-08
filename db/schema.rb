@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2018_05_05_162204) do
     t.string "fri_flag", limit: 1, default: "N"
     t.string "sat_flag", limit: 1, default: "N"
     t.string "sun_flag", limit: 1, default: "N"
+    t.string "finish_flag", limit: 1, default: "N"
     t.string "deleted_flag", limit: 1, default: "N"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

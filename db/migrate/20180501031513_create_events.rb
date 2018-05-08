@@ -14,6 +14,7 @@ class CreateEvents < ActiveRecord::Migration[5.2]
 	  t.string :fri_flag, limit: 1, default: "N"
 	  t.string :sat_flag, limit: 1, default: "N"
 	  t.string :sun_flag, limit: 1, default: "N"
+	  t.string :finish_flag, limit: 1, default: "N"
 	  t.string :deleted_flag, limit: 1, default: "N"
       t.timestamps
     end
